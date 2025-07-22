@@ -28,5 +28,9 @@ public class DeviceService {
     public List<Device> getAllDevices() {
         return deviceRepository.findAll();
     }
+
+    public List<Device> findByBrand(String brand) {
+        return deviceRepository.findByBrand(brand);
+    }
     
 }
