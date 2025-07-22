@@ -7,8 +7,7 @@ public class DeviceInUseException extends CustomException {
     @Override
     public ProblemDetail toProblemDetail() {
         var pb = ProblemDetail.forStatus(HttpStatus.CONFLICT);
-        pb.setTitle("Device is in use, it's not possible to delete now");
-
+        pb.setTitle("Device is in use, try in another time");
         return pb;
     }
 }

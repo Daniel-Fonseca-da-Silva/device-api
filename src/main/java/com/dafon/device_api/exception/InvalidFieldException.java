@@ -8,9 +8,7 @@ public class InvalidFieldException  extends CustomException {
     @Override
     public ProblemDetail toProblemDetail() {
         var pb = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
-
         pb.setTitle("All fields are required");
-
         return pb;
     }
 }
