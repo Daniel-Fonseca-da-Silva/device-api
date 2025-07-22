@@ -43,4 +43,13 @@ public class DeviceController {
         }
         return ResponseEntity.ok(device);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteDevice(@PathVariable Long id) {
+        if (deviceService.findById(id) == null) {
+            throw new NoFoundException();
+        }
+        deviceService.deleteDevice(id);
+        return ResponseEntity.noContent().build();
+    }
 }
