@@ -4,6 +4,7 @@ import com.dafon.device_api.controller.dto.CreatedDeviceDto;
 import com.dafon.device_api.controller.dto.UpdateDeviceDto;
 import com.dafon.device_api.exception.NotFoundException;
 import com.dafon.device_api.model.Device;
+import com.dafon.device_api.model.DeviceState;
 import com.dafon.device_api.service.DeviceService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/devices")
+@RequestMapping("/api/v1/devices")
 public class DeviceController {
 
     private final DeviceService deviceService;
@@ -42,6 +43,23 @@ public class DeviceController {
         return ResponseEntity.ok(devices);
     }
 
+    @GetMapping("/state/{state}")
+    public ResponseEntity<List<Device>> getDevicesByState(@PathVariable String state) {
+        DeviceState deviceState;
+
+        try {
+            deviceState = DeviceState.valueOf(state.toUpperCase());
+        } catch (IllegalArgumentException | NullPointerException e) {
+            throw new NotFoundException();
+        }
+        
+        List<Device> devices = deviceService.findByState(deviceState);
+        if(devices.isEmpty()) {
+            throw new NotFoundException();
+        }
+        return ResponseEntity.ok(devices);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Device> getDeviceById(@PathVariable Long id) {
         Device device = deviceService.findById(id);
@@ -51,7 +69,7 @@ public class DeviceController {
         return ResponseEntity.ok(device);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Device> updateDevice(@PathVariable Long id, @RequestBody @Valid UpdateDeviceDto dto) {
         Device updated = deviceService.updateDevice(id, dto);
         return ResponseEntity.ok(updated);
