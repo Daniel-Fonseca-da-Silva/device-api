@@ -26,12 +26,21 @@ public class DeviceController {
         return ResponseEntity.ok(device);
     }
 
-    @GetMapping("/{brand}")
+    @GetMapping("/brand/{brand}")
     public ResponseEntity<List<Device>> getDevicesByBrand(@PathVariable String brand) {
         List<Device> devices = deviceService.findByBrand(brand);
         if (devices.isEmpty()) {
             throw new NoFoundException();
         }
         return ResponseEntity.ok(devices);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Device> getDeviceById(@PathVariable Long id) {
+        Device device = deviceService.findById(id);
+        if (device == null) {
+            throw new NoFoundException();
+        }
+        return ResponseEntity.ok(device);
     }
 }
