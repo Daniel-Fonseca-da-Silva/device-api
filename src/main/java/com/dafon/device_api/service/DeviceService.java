@@ -1,7 +1,11 @@
 package com.dafon.device_api.service;
 
 import com.dafon.device_api.controller.dto.CreatedDeviceDto;
+import com.dafon.device_api.exception.DeviceInUseException;
 import com.dafon.device_api.model.Device;
+import com.dafon.device_api.model.DeviceState;
+import com.dafon.device_api.exception.NoFoundException;
+import com.dafon.device_api.exception.CustomException;
 import com.dafon.device_api.repository.DeviceRepository;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +39,17 @@ public class DeviceService {
 
     public Device findById(Long id) {
         return deviceRepository.findById(id).orElse(null);
+    }
+
+    public void deleteDevice(Long id) {
+        Device device = findById(id);
+        if (device == null) {
+            throw new NoFoundException();
+        }
+        if (device.getState() == DeviceState.IN_USE) {
+            throw new DeviceInUseException();
+        }
+        deviceRepository.deleteById(id);
     }
 
 }
