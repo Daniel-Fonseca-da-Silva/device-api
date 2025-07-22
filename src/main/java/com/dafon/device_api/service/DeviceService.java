@@ -5,6 +5,8 @@ import com.dafon.device_api.model.Device;
 import com.dafon.device_api.repository.DeviceRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DeviceService {
 
@@ -21,6 +23,10 @@ public class DeviceService {
         device.setState(dto.state());
         device.setCreationTime(java.time.LocalDateTime.now());
         return deviceRepository.save(device);
+    }
+
+    public List<Device> getAllDevices() {
+        return deviceRepository.findAll();
     }
     
 }
