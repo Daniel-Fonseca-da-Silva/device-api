@@ -1,7 +1,8 @@
 package com.dafon.device_api.controller;
 
 import com.dafon.device_api.controller.dto.CreatedDeviceDto;
-import com.dafon.device_api.exception.NoFoundException;
+import com.dafon.device_api.controller.dto.UpdateDeviceDto;
+import com.dafon.device_api.exception.NotFoundException;
 import com.dafon.device_api.model.Device;
 import com.dafon.device_api.service.DeviceService;
 import jakarta.validation.Valid;
@@ -26,11 +27,17 @@ public class DeviceController {
         return ResponseEntity.ok(device);
     }
 
+    @GetMapping
+    public ResponseEntity<List<Device>> getAllDevices() {
+        var devices = deviceService.getAllDevices();
+        return ResponseEntity.ok(devices);
+    }
+
     @GetMapping("/brand/{brand}")
     public ResponseEntity<List<Device>> getDevicesByBrand(@PathVariable String brand) {
         List<Device> devices = deviceService.findByBrand(brand);
         if (devices.isEmpty()) {
-            throw new NoFoundException();
+            throw new NotFoundException();
         }
         return ResponseEntity.ok(devices);
     }
@@ -39,15 +46,21 @@ public class DeviceController {
     public ResponseEntity<Device> getDeviceById(@PathVariable Long id) {
         Device device = deviceService.findById(id);
         if (device == null) {
-            throw new NoFoundException();
+            throw new NotFoundException();
         }
         return ResponseEntity.ok(device);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Device> updateDevice(@PathVariable Long id, @RequestBody @Valid UpdateDeviceDto dto) {
+        Device updated = deviceService.updateDevice(id, dto);
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDevice(@PathVariable Long id) {
         if (deviceService.findById(id) == null) {
-            throw new NoFoundException();
+            throw new NotFoundException();
         }
         deviceService.deleteDevice(id);
         return ResponseEntity.noContent().build();
