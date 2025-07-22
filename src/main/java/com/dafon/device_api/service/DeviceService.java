@@ -1,11 +1,11 @@
 package com.dafon.device_api.service;
 
 import com.dafon.device_api.controller.dto.CreatedDeviceDto;
+import com.dafon.device_api.controller.dto.UpdateDeviceDto;
 import com.dafon.device_api.exception.DeviceInUseException;
 import com.dafon.device_api.model.Device;
 import com.dafon.device_api.model.DeviceState;
-import com.dafon.device_api.exception.NoFoundException;
-import com.dafon.device_api.exception.CustomException;
+import com.dafon.device_api.exception.NotFoundException;
 import com.dafon.device_api.repository.DeviceRepository;
 import org.springframework.stereotype.Service;
 
@@ -41,10 +41,34 @@ public class DeviceService {
         return deviceRepository.findById(id).orElse(null);
     }
 
+    public Device updateDevice(Long id, UpdateDeviceDto dto) {
+        Device device = findById(id);
+
+        if (device == null) {
+            throw new NotFoundException();
+        }
+        
+        if (device.getState() == DeviceState.IN_USE) {
+            if (!device.getName().equals(dto.name()) || !device.getBrand().equals(dto.brand())) {
+                throw new DeviceInUseException();
+            }
+
+        }
+
+        if (dto.name() != null) {
+            device.setName(dto.name());
+        }
+        if (dto.brand() != null) {
+            device.setBrand(dto.brand());
+        }
+        return deviceRepository.save(device);
+        
+    }
+
     public void deleteDevice(Long id) {
         Device device = findById(id);
         if (device == null) {
-            throw new NoFoundException();
+            throw new NotFoundException();
         }
         if (device.getState() == DeviceState.IN_USE) {
             throw new DeviceInUseException();
@@ -53,3 +77,4 @@ public class DeviceService {
     }
 
 }
+
