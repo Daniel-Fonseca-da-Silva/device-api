@@ -1,6 +1,7 @@
 package com.dafon.device_api.controller;
 
 import com.dafon.device_api.controller.dto.CreatedDeviceDto;
+import com.dafon.device_api.exception.NoFoundException;
 import com.dafon.device_api.model.Device;
 import com.dafon.device_api.service.DeviceService;
 import jakarta.validation.Valid;
@@ -25,9 +26,12 @@ public class DeviceController {
         return ResponseEntity.ok(device);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Device>> getAllDevices() {
-        var devices = deviceService.getAllDevices();
+    @GetMapping("/{brand}")
+    public ResponseEntity<List<Device>> getDevicesByBrand(@PathVariable String brand) {
+        List<Device> devices = deviceService.findByBrand(brand);
+        if (devices.isEmpty()) {
+            throw new NoFoundException();
+        }
         return ResponseEntity.ok(devices);
     }
 }
