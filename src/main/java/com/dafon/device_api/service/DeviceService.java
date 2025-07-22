@@ -3,6 +3,7 @@ package com.dafon.device_api.service;
 import com.dafon.device_api.controller.dto.CreatedDeviceDto;
 import com.dafon.device_api.controller.dto.UpdateDeviceDto;
 import com.dafon.device_api.exception.DeviceInUseException;
+import com.dafon.device_api.exception.InvalidFieldException;
 import com.dafon.device_api.model.Device;
 import com.dafon.device_api.model.DeviceState;
 import com.dafon.device_api.exception.NotFoundException;
@@ -46,8 +47,10 @@ public class DeviceService {
     }
 
     public Device updateDevice(Long id, UpdateDeviceDto dto) {
+        if (dto.name() == null && dto.brand() == null && dto.state() == null) {
+            throw new InvalidFieldException();
+        }
         Device device = findById(id);
-
         if (device == null) {
             throw new NotFoundException();
         }
@@ -68,8 +71,8 @@ public class DeviceService {
         if (dto.state() != null) {
             device.setState(dto.state());
         }
+
         return deviceRepository.save(device);
-        
     }
 
     public void deleteDevice(Long id) {
