@@ -3,7 +3,7 @@ package com.dafon.device_api.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 
-public class NoFoundException extends CustomException{
+public class NotFoundException extends CustomException{
 
     @Override
     public ProblemDetail toProblemDetail() {
