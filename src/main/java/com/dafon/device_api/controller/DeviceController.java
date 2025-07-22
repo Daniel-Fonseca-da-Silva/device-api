@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/devices")
 public class DeviceController {
@@ -21,5 +23,11 @@ public class DeviceController {
     public ResponseEntity<Device> createDevice(@RequestBody @Valid CreatedDeviceDto dto) {
         var device = deviceService.createDevice(dto);
         return ResponseEntity.ok(device);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Device>> getAllDevices() {
+        var devices = deviceService.getAllDevices();
+        return ResponseEntity.ok(devices);
     }
 }
