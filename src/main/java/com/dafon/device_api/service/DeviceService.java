@@ -37,6 +37,10 @@ public class DeviceService {
         return deviceRepository.findByBrand(brand);
     }
 
+    public List<Device> findByState(DeviceState state) {
+        return deviceRepository.findByState(state);
+    }
+
     public Device findById(Long id) {
         return deviceRepository.findById(id).orElse(null);
     }
@@ -60,6 +64,9 @@ public class DeviceService {
         }
         if (dto.brand() != null) {
             device.setBrand(dto.brand());
+        }
+        if (dto.state() != null) {
+            device.setState(dto.state());
         }
         return deviceRepository.save(device);
         
