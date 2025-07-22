@@ -32,5 +32,9 @@ public class DeviceService {
     public List<Device> findByBrand(String brand) {
         return deviceRepository.findByBrand(brand);
     }
-    
+
+    public Device findById(Long id) {
+        return deviceRepository.findById(id).orElse(null);
+    }
+
 }
