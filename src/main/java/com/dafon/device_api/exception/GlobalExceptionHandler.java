@@ -21,4 +21,10 @@ public class GlobalExceptionHandler {
     public ProblemDetail handleCustomException(CustomException ex) {
         return ex.toProblemDetail();
     }
+
+    @ExceptionHandler(DeviceInUseException.class)
+    @ResponseBody
+    public ProblemDetail handleDeviceInUseException(DeviceInUseException ex) {
+        return ex.toProblemDetail();
+    }
 } 
