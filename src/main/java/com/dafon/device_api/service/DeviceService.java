@@ -46,15 +46,18 @@ public class DeviceService {
         return deviceRepository.findById(id).orElse(null);
     }
 
+    // Updates an existing device with the provided data. Only non-null fields are updated. Throws exceptions if invalid or not allowed.
     public Device updateDevice(Long id, UpdateDeviceDto dto) {
+        // Check if at least one field is provided
         if (dto.name() == null && dto.brand() == null && dto.state() == null) {
             throw new InvalidFieldException();
         }
+        // Check if the device exists
         Device device = findById(id);
         if (device == null) {
             throw new NotFoundException();
         }
-        
+        // If the device is in use, only the state can be updated
         if (device.getState() == DeviceState.IN_USE) {
             if (!device.getName().equals(dto.name()) || !device.getBrand().equals(dto.brand())) {
                 throw new DeviceInUseException();
@@ -62,6 +65,7 @@ public class DeviceService {
 
         }
 
+        // Update the device with the provided data, only if the field is not null and only to name, brand or state
         if (dto.name() != null) {
             device.setName(dto.name());
         }
@@ -75,11 +79,15 @@ public class DeviceService {
         return deviceRepository.save(device);
     }
 
+    // Deletes a device. Throws exceptions if the device is in use or not found.
     public void deleteDevice(Long id) {
+        // Check if the device exists
         Device device = findById(id);
+        // If the device does not exist, throw an exception
         if (device == null) {
             throw new NotFoundException();
         }
+        // If the device is in use, throw an exception
         if (device.getState() == DeviceState.IN_USE) {
             throw new DeviceInUseException();
         }
