@@ -1,4 +1,4 @@
-package com.dafon.device_api.model;
+package com.dafon.device_api.entity;
 
 public enum DeviceState {
     AVAILABLE("Available"),

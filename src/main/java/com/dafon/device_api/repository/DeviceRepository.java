@@ -1,7 +1,7 @@
 package com.dafon.device_api.repository;
 
-import com.dafon.device_api.model.Device;
-import com.dafon.device_api.model.DeviceState;
+import com.dafon.device_api.entity.Device;
+import com.dafon.device_api.entity.DeviceState;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

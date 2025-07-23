@@ -1,6 +1,6 @@
 package com.dafon.device_api.controller.dto;
 
-import com.dafon.device_api.model.DeviceState;
+import com.dafon.device_api.entity.DeviceState;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
