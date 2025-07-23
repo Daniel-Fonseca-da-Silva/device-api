@@ -42,9 +42,8 @@ RESTful API for device management, allowing you to create, update, retrieve, and
 - Docker (required for containerization)
 - Docker Compose (recommended for local development and testing)
 - Lombok (for reducing boilerplate code in Java classes)
-- Spring Boot (framework for rapid application development)
-- Swagger / OpenAPI (for API documentation and testing)
-- PostgreSQL (for database)
+- Spring Boot 3.5.3 (framework for rapid application development)
+- Swagger / OpenAPI 2.7.0 (for API documentation and testing)
 
 ## About Dockerfile and Docker Compose
 - The **Dockerfile** defines how the application is packaged into a Docker image. It is used both by Docker Compose and can be used standalone for manual deployments or in cloud environments.
